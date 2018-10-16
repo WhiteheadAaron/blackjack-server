@@ -3,14 +3,20 @@ const Result = require("../models/result");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  Result.find()
-    .select("played wins losses")
-    .then(results => {
-        res.json(results);
+
+    res.json({
+        "played": "20",
+        "wins": "12",
+        "losses": "8"
     })
-    .catch(err => {
-        next(err);
-    });
+//   Result.find()
+//     .select("played wins losses")
+//     .then(results => {
+//         res.json(results);
+//     })
+//     .catch(err => {
+//         next(err);
+//     });
 });
 
 router.post("/", (req, res, next) => {
