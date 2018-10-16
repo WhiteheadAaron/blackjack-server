@@ -4,19 +4,19 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
 
-    res.json({
-        "played": "20",
-        "wins": "12",
-        "losses": "8"
+    // res.json({
+    //     "played": "20",
+    //     "wins": "12",
+    //     "losses": "8"
+    // })
+  Result.find()
+    .select("played wins losses")
+    .then(results => {
+        res.json(results);
     })
-//   Result.find()
-//     .select("played wins losses")
-//     .then(results => {
-//         res.json(results);
-//     })
-//     .catch(err => {
-//         next(err);
-//     });
+    .catch(err => {
+        next(err);
+    });
 });
 
 router.post("/", (req, res, next) => {
