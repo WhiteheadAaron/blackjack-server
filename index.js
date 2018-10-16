@@ -22,12 +22,12 @@ app.use(
 );
 
 app.get('/test', (req, res) => {
-  res.json([
+  res.json(
     {
       'wins': 'hello',
       'losses': 'goodbye'
     }
-  ])
+  )
 })
 
 function runServer(port = PORT) {
