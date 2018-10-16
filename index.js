@@ -24,9 +24,9 @@ app.use(
 app.get('/test', (req, res) => {
   res.json([
     {
-      'played': '20',
-      'wins': '15',
-      'losses': '5'
+      played: 20,
+      wins: 15,
+      losses: 5
     }
   ])
 })
