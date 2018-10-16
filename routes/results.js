@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
     .select("played wins losses")
     .then(results => {
         console.log(results)
-        res.json(results);
+        res.json([ results ]);
     })
     .catch(err => {
         next(err);
