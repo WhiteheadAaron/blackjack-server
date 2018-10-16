@@ -4,8 +4,11 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 
+
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
+
+const resultsRouter = require('./routes/results');
 
 const app = express();
 
@@ -21,15 +24,8 @@ app.use(
   })
 );
 
-app.get('/test', (req, res) => {
-  res.json(
-    {
-      'played': '20',
-      'wins': '12',
-      'losses': '8'
-    }
-  )
-})
+app.use('/test', resultsRouter);
+
 
 function runServer(port = PORT) {
   const server = app
