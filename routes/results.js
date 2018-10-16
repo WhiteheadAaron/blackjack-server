@@ -21,6 +21,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res, next) => {
+    console.log(req.body)
   const newObj = {
     played: req.body.played,
     wins: req.body.wins,
