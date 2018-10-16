@@ -24,25 +24,13 @@ app.use(
 
 app.get('/test', (req, res) => {
   res.json([
-    "Bath Blue",
-    "Barkham Blue",
-    "Buxton Blue",
-    "Cheshire Blue",
-    "Devon Blue",
-    "Dorset Blue Vinney",
-    "Dovedale",
-    "Exmoor Blue",
-    "Harbourne Blue",
-    "Lanark Blue",
-    "Lymeswold",
-    "Oxford Blue",
-    "Shropshire Blue",
-    "Stichelton",
-    "Stilton",
-    "Blue Wensleydale",
-    "Yorkshire Blue"
-  ]);
-});
+    {
+      played: 20,
+      wins: 15,
+      losses: 5
+    }
+  ])
+})
 
 function runServer(port = PORT) {
   const server = app
