@@ -23,7 +23,10 @@ app.use(
 
 app.get('/test', (req, res) => {
   res.json([
-    'hello'
+    {
+      'wins': 'hello',
+      'losses': 'goodbye'
+    }
   ])
 })
 
