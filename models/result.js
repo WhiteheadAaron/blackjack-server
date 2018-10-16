@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 
 const resultSchema = new mongoose.Schema({
@@ -16,13 +15,13 @@ const resultSchema = new mongoose.Schema({
   }
 });
 
-// Add `createdAt` and `updatedAt` fields
+
 resultSchema.set("timestamps", true);
 
 resultSchema.set("toObject", {
-  virtuals: true, // include built-in virtual `id`
+  virtuals: true, 
   transform: (doc, ret) => {
-    delete ret._id; // delete `_id`
+    delete ret._id; 
     delete ret.__v;
   }
 });
