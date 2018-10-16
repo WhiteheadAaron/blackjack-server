@@ -12,6 +12,7 @@ router.get("/", (req, res) => {
   Result.find()
     .select("played wins losses")
     .then(results => {
+        console.log(results)
         res.json(results);
     })
     .catch(err => {
