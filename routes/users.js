@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const router = express.Router();
 
 router.post("/", (req, res, next) => {
-  const { username, password, fullName } = req.body;
+  const { username, password, played, wins, losses } = req.body;
 
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
@@ -17,7 +17,7 @@ router.post("/", (req, res, next) => {
           location: missingField
       });
   }
-  const stringFields = ['username', 'password', 'fullName'];
+  const stringFields = ['username', 'password', 'played', 'wins', 'losses'];
   const nonStringField = stringFields.find(
       field => field in req.body && typeof req.body[field] !== 'string'
   );
@@ -49,7 +49,7 @@ router.post("/", (req, res, next) => {
       min: 1
     },
     password: {
-      min: 8,
+      min: 5,
       max: 72
     }
   };
@@ -94,7 +94,9 @@ router.post("/", (req, res, next) => {
       return User.create({
         username,
         password: digest,
-        fullName
+        played,
+        wins,
+        losses
       });
     })
     .then(result => {
