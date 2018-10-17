@@ -17,9 +17,9 @@ const statSchema = new mongoose.Schema({
 });
 
 
-resultSchema.set("timestamps", true);
+statSchema.set("timestamps", true);
 
-resultSchema.set("toObject", {
+statSchema.set("toObject", {
   virtuals: true, 
   transform: (doc, ret) => {
     delete ret._id; 
