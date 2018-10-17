@@ -1,27 +1,27 @@
 const express = require("express");
 const Result = require("../models/result");
 const router = express.Router();
+const passport = require("passport");
+
+router.use(
+  "/",
+  passport.authenticate("jwt", { session: false, failWithError: true })
+);
 
 router.get("/", (req, res) => {
-
-    // res.json({
-    //     "played": "20",
-    //     "wins": "12",
-    //     "losses": "8"
-    // })
   Result.find()
     .select("played wins losses")
     .then(results => {
-        console.log(results)
-        res.json(results);
+      console.log(results);
+      res.json(results);
     })
     .catch(err => {
-        next(err);
+      next(err);
     });
 });
 
 router.post("/", (req, res, next) => {
-    console.log(req.body)
+  console.log(req.body);
   const newObj = {
     played: req.body.played,
     wins: req.body.wins,
