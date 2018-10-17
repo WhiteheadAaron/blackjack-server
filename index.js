@@ -11,7 +11,7 @@ const jwtStrategy = require('./passport/jwt');
 const { PORT, CLIENT_ORIGIN } = require('./config');
 const { dbConnect } = require('./db-mongoose');
 
-const resultsRouter = require('./routes/results');
+const statsRouter = require('./routes/stats');
 const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
 require('dotenv').config;
@@ -33,7 +33,7 @@ app.use(
   })
 );
 
-app.use('/test', resultsRouter);
+app.use('/stats', statsRouter);
 app.use('/login', authRouter);
 app.use('/users', usersRouter);
 

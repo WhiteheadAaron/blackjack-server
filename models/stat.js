@@ -1,18 +1,19 @@
 const mongoose = require("mongoose");
 
-const resultSchema = new mongoose.Schema({
+const statSchema = new mongoose.Schema({
   played: {
-    type: String,
+    type: Number,
     required: true
   },
   wins: {
-      type: String,
+      type: Number,
       required: true
   },
   losses: {
-      type: String,
+      type: Number,
       required: true
-  }
+  },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 });
 
 
@@ -26,4 +27,4 @@ resultSchema.set("toObject", {
   }
 });
 
-module.exports = mongoose.model("Result", resultSchema);
+module.exports = mongoose.model("Stat", statSchema);

@@ -1,5 +1,5 @@
 const express = require("express");
-const Result = require("../models/result");
+const Stat = require("../models/stat");
 const router = express.Router();
 const passport = require("passport");
 
@@ -9,7 +9,7 @@ router.use(
 );
 
 router.get("/", (req, res) => {
-  Result.find()
+  Stat.find()
     .select("played wins losses")
     .then(results => {
       console.log(results);
@@ -28,7 +28,7 @@ router.post("/", (req, res, next) => {
     losses: req.body.losses
   };
 
-  return Result.create(newObj)
+  return Stat.create(newObj)
     .then(results => {
       res.location(`${req.originalUrl}/${results.id}`);
       res.status(201).json(results);
@@ -47,7 +47,7 @@ router.put("/:id", (req, res, next) => {
     wins: req.body.wins,
     losses: req.body.losses
   };
-  return Result.findOneAndUpdate({ _id: id }, newObj, { new: true })
+  return Stat.findOneAndUpdate({ _id: id }, newObj, { new: true })
     .select("played wins losses")
     .then(results => {
       res.json(results);
