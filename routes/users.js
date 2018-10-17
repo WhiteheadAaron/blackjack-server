@@ -100,7 +100,7 @@ router.post("/", (req, res, next) => {
     .then(result => {
       return res
         .status(201)
-        .location(`/users/${result.id}`)
+        .location(`/${result.id}`)
         .json(result);
     })
     .catch(err => {
