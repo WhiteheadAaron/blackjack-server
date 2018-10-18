@@ -3,13 +3,14 @@ const Stat = require("../models/stat");
 const router = express.Router();
 const passport = require("passport");
 
-// router.use(
-//   "/",
-//   passport.authenticate("jwt", { session: false, failWithError: true })
-// );
+router.use(
+  passport.authenticate("jwt", { session: false, failWithError: true })
+);
 
 router.get("/", (req, res) => {
-  Stat.find()
+  console.log(req.user)
+  let userId = req.user.id
+  Stat.find({userId: userId})
     .select("played wins losses")
     .then(results => {
       console.log(results);
