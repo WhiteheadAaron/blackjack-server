@@ -25,7 +25,8 @@ router.post("/", (req, res, next) => {
   const newObj = {
     played: req.body.played,
     wins: req.body.wins,
-    losses: req.body.losses
+    losses: req.body.losses,
+    userId: req.body.userId
   };
 
   return Stat.create(newObj)
@@ -45,7 +46,8 @@ router.put("/:id", (req, res, next) => {
   const newObj = {
     played: req.body.played,
     wins: req.body.wins,
-    losses: req.body.losses
+    losses: req.body.losses,
+    userId: req.body.userId
   };
   return Stat.findOneAndUpdate({ _id: id }, newObj, { new: true })
     .select("played wins losses")
