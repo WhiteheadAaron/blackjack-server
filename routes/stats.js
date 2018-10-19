@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
   console.log(req.user)
   let userId = req.user.id
   Stat.find({userId: userId})
-    .select("played wins losses")
+    .select("played wins losses userId username")
     .then(results => {
       console.log(results);
       res.json(results);
@@ -27,7 +27,8 @@ router.post("/", (req, res, next) => {
     played: req.body.played,
     wins: req.body.wins,
     losses: req.body.losses,
-    userId: req.body.userId
+    userId: req.body.userId,
+    username: req.body.username
   };
 
   return Stat.create(newObj)
