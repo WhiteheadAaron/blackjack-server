@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
   console.log(req.user)
   let userId = req.user.id
   Stat.find({userId: userId})
-    .select("played wins losses userId username")
+    .select("played wins losses userId username _id")
     .then(results => {
       console.log(results);
       res.json(results);
@@ -49,7 +49,8 @@ router.put("/:id", (req, res, next) => {
     played: req.body.played,
     wins: req.body.wins,
     losses: req.body.losses,
-    userId: req.body.userId
+    userId: req.body.userId,
+    username: req.body.username
   };
   return Stat.findOneAndUpdate({ _id: id }, newObj, { new: true })
     .select("played wins losses")
