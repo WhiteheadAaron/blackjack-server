@@ -13,6 +13,10 @@ const statSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  ties: {
+    type: Number,
+    requires: true
+  },
   username: {
     type: String,
     required: true,
