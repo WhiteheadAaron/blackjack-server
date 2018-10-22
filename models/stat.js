@@ -15,7 +15,15 @@ const statSchema = new mongoose.Schema({
   },
   ties: {
     type: Number,
-    requires: true
+    required: true
+  },
+  money: {
+    type: Number,
+    required: true
+  },
+  netGain: {
+    type: Number,
+    required: true
   },
   username: {
     type: String,

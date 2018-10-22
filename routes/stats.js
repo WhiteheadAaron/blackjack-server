@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
   console.log(req.user)
   let userId = req.user.id
   Stat.find({userId: userId})
-    .select("played wins losses ties userId username _id")
+    .select("played wins losses money ties netGain userId username _id")
     .then(results => {
       console.log(results);
       res.json(results);
@@ -28,6 +28,8 @@ router.post("/", (req, res, next) => {
     wins: req.body.wins,
     losses: req.body.losses,
     ties: req.body.ties,
+    money: req.body.money,
+    netGain: req.body.netGain,
     userId: req.body.userId,
     username: req.body.username
   };
@@ -51,8 +53,8 @@ router.put("/:id", (req, res, next) => {
     wins: req.body.wins,
     losses: req.body.losses,
     ties: req.body.ties,
-    userId: req.body.userId,
-    username: req.body.username
+    money: req.body.money,
+    netGain: req.body.netGain
   };
   return Stat.findOneAndUpdate({ _id: id }, newObj, { new: true })
     .select("played wins losses ties")
