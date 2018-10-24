@@ -57,7 +57,7 @@ router.put("/:id", (req, res, next) => {
     netGain: req.body.netGain
   };
   return Stat.findOneAndUpdate({ _id: id }, newObj, { new: true })
-    .select("played wins losses ties")
+    .select("played wins losses ties money netGain")
     .then(results => {
       res.json(results);
     })
