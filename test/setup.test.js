@@ -5,7 +5,7 @@ const chaiHttp = require("chai-http");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
-const app = require("../index");
+const { app } = require("../index");
 const { TEST_DATABASE_URL, JWT_SECRET } = require("../config");
 const { dbConnect, dbDisconnect } = require("../db-mongoose");
 
@@ -23,74 +23,72 @@ process.stdout.write("\x1Bc\n");
 const expect = chai.expect;
 chai.use(chaiHttp);
 
-describe("All of my Tests!", function() {
-  let user = {};
+let user = {};
+let token;
+before(function() {
+  return dbConnect(TEST_DATABASE_URL).then(() => {
+    mongoose.connection.db.dropDatabase();
+  });
+});
+
+beforeEach(function() {
+  mongoose.connection.db.dropDatabase();
   let token;
-  before(function() {
-    mongoose
-      .connect(
-        TEST_DATABASE_URL,
-        { useNewUrlParser: true }
-      )
-      .then(() => mongoose.connection.db.dropDatabase())
-      .then(() => {
-        return Promise.all([
-          User.insertMany(users),
-          Stat.insertMany(stats)
-        ]).then(([users]) => {
-          user = users[0];
-          token = jwt.sign({ user }, JWT_SECRET, { subject: user.username });
-        });
-      })
-      .then(results => {
-        console.info(
-          `Completed ${results.length} Promises, inserting ${results.length /
-            5} items`
-        );
-      })
-      .then(() => mongoose.disconnect())
-      .catch(err => {
-        console.error(err);
+  let user;
+
+  return Promise.all([User.insertMany(users), Stat.insertMany(stats)]).then(
+    ([users]) => {
+      user = users[0];
+      token = jwt.sign({ user }, JWT_SECRET, { subject: user.username });
+    }
+  );
+});
+
+afterEach(function() {
+  return mongoose.connection.db.dropDatabase();
+});
+
+after(function() {
+  return dbDisconnect();
+});
+
+describe("Mocha and Chai", function() {
+  it("should be properly setup", function() {
+    expect(true).to.be.true;
+  });
+  it("Should create a new user", function() {
+    const newUser = {
+      username: "Nik",
+      password: "doggiedog"
+    };
+    let res;
+    return chai
+      .request(app)
+      .post("/users")
+      .send(newUser)
+      .then(_res => {
+        res = _res;
+        expect(res).to.have.status(201);
+        expect(res.body).to.be.an("object");
+        expect(res.body.id).to.exist;
       });
   });
-
-  after(function() {
-    return dbDisconnect();
-  });
-
-  describe("Mocha and Chai", function() {
-    it("should be properly setup", function() {
-      expect(true).to.be.true;
-    });
-
-    // it('Should return a users stats', function() {
-    //   return Stat.find({ userId: user.id }), chai.request(require('../index')).get('/stats')
-    //     .set("Authorization", `Bearer ${token}`)
-    //     .then(([data, res]) => {
-    //       expect(res).to.have.status(200);
-    //       expect(res).to.be.json;
-    //       expect(res.body).to.be.a("array");
-    //       expect(res.body).to.have.length(data.length);
-    //     })
-    // });
-  });
-  describe("GET /users", function() {
-    it("Should create a new user", function() {
-      const testUser = {
-        username: "Aaron",
-        password: "hello"
-      };
-
-      let res;
-      return chai
-        .request(app)
-        .post("/users")
-        .sent(testUser)
-        .then(_res => {
-          res = _res;
-          expect(res).to.have.status(201);
-          expect(res.body).to.be.an("object");
-        });
-    });
+});
+describe("GET /users", function() {
+  it("Should sign a user in", function() {
+    const testUser = {
+      username: "aaron",
+      password: "hello"
+    };
+    let res;
+    return chai
+      .request(app)
+      .post("/login")
+      .send(testUser)
+      .then(_res => {
+        res = _res;
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.an("object");
+      });
   });
 });
