@@ -13,11 +13,8 @@ const Stat = require("../models/stat");
 const User = require("../models/user");
 const { users, stats } = require("../db/users");
 
-// Set NODE_ENV to `test` to disable http layer logs
-// You can do this in the command line, but this is cross-platform
 process.env.NODE_ENV = "test";
 
-// Clear the console before each run
 process.stdout.write("\x1Bc\n");
 
 const expect = chai.expect;
@@ -33,12 +30,10 @@ before(function() {
 
 beforeEach(function() {
   mongoose.connection.db.dropDatabase();
-  let token;
-  let user;
 
   return Promise.all([User.insertMany(users), Stat.insertMany(stats)]).then(
     ([users]) => {
-      user = users[0];
+      user = users[1];
       token = jwt.sign({ user }, JWT_SECRET, { subject: user.username });
     }
   );
@@ -92,3 +87,57 @@ describe("GET /users", function() {
       });
   });
 });
+describe("GET /stats", function() {
+  it("Should get a users stats", function() {
+    return (
+      Stat.find({ userId: user.id }),
+      chai
+        .request(app)
+        .get("/stats")
+        .set("Authorization", `Bearer ${token}`)
+        .then(res => {
+          console.log(res.body[0]);
+          expect(res).to.have.status(200);
+          expect(res).to.be.json;
+          expect(res.body[0]).to.have.keys(
+            "username",
+            "played",
+            "wins",
+            "losses",
+            "ties",
+            "id",
+            "money",
+            "netGain",
+            "userId"
+          );
+        })
+    );
+  });
+});
+
+// describe("PUT /stats", function() {
+//   it("Should update a users stats", function() {
+//     let id = "000000000000000000000102";
+//     const newData = {
+//       username: "aaron",
+//       userId: "000000000000000000000002",
+//       played: "20",
+//       wins: "10",
+//       losses: "8",
+//       ties: "2",
+//       id: "000000000000000000000102",
+//       money: "120",
+//       netGain: "20"
+//     };
+//     Stat.findOne({ userId: user.id });
+//     return chai
+//       .request(app)
+//       .put(`/stats/${id}`)
+//       .set("Authorization", `Bearer ${token}`)
+//       .send(newData)
+//   })
+//   .then(function(res) {
+//     expect(res).to.have.status(200);
+
+//   })
+// });

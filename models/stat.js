@@ -25,6 +25,10 @@ const statSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  bankruptcies: {
+    type: Number,
+    required: true
+  },
   username: {
     type: String,
     required: true,
